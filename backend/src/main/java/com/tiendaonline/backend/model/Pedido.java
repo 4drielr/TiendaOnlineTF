@@ -6,6 +6,7 @@ import java.util.Set;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -17,7 +18,13 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
+import jakarta.persistence.CollectionTable;
+
 import lombok.Data;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Data
 @Entity
@@ -30,6 +37,7 @@ public class Pedido {
     
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "usuario_id", nullable = false)
+    @JsonBackReference
     private Usuario usuario;
     
     @Column(nullable = false)
@@ -37,19 +45,26 @@ public class Pedido {
     private Date fechaPedido = new Date();
     
     @Column(nullable = false)
-    private String estado = "pendiente"; // pendiente, enviado, entregado, cancelado
+    private String estado = "pendiente"; // Valores posibles: pendiente, enviado, entregado, cancelado
     
     @Column(nullable = false)
     private Double total = 0.0;
     
-    @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "pedido", "producto"})
     private Set<DetallePedido> detalles = new HashSet<>();
+    
+    @ElementCollection
+    @CollectionTable(name = "pedido_productos", joinColumns = @JoinColumn(name = "pedido_id"))
+    @Column(name = "producto_id")
+    private Set<Long> productos_id = new HashSet<>();
     
     private String direccionEnvio;
     
     private String metodoPago;
     
-    // Getters y Setters
+    // Métodos de acceso y modificación
     public Long getId() {
         return id;
     }
@@ -114,7 +129,15 @@ public class Pedido {
         this.metodoPago = metodoPago;
     }
     
-    // Métodos helper para mantener la relación bidireccional
+    public Set<Long> getProductos_id() {
+        return productos_id;
+    }
+
+    public void setProductos_id(Set<Long> productos_id) {
+        this.productos_id = productos_id;
+    }
+    
+    // Métodos auxiliares para mantener la relación bidireccional
     public void addDetallePedido(DetallePedido detalle) {
         detalles.add(detalle);
         detalle.setPedido(this);
@@ -123,5 +146,20 @@ public class Pedido {
     public void removeDetallePedido(DetallePedido detalle) {
         detalles.remove(detalle);
         detalle.setPedido(null);
+    }
+    
+    @Override
+    public String toString() {
+        return "Pedido{" +
+                "id=" + id +
+                ", usuario=" + (usuario != null ? usuario.getId() : null) +
+                ", fechaPedido=" + fechaPedido +
+                ", estado='" + estado + '\'' +
+                ", total=" + total +
+                ", detalles.size=" + (detalles != null ? detalles.size() : 0) +
+                ", productos_id=" + productos_id +
+                ", direccionEnvio='" + direccionEnvio + '\'' +
+                ", metodoPago='" + metodoPago + '\'' +
+                '}';
     }
 }

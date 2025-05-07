@@ -9,7 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,7 +23,7 @@ import com.tiendaonline.backend.repository.SoporteTecnicoRepository;
 import com.tiendaonline.backend.repository.UsuarioRepository;
 import com.tiendaonline.backend.security.UserPrincipal;
 
-@CrossOrigin(origins = "*", maxAge = 3600)
+//@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api/soporte")
 public class SoporteTecnicoController {
@@ -65,7 +64,7 @@ public class SoporteTecnicoController {
             return ResponseEntity.notFound().build();
         }
         
-        // Verificar que el usuario sea el dueño de la solicitud o un admin
+        // Verificar que el usuario sea el dueño de la solicitud o un administrador
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
         
@@ -137,7 +136,7 @@ public class SoporteTecnicoController {
             return ResponseEntity.notFound().build();
         }
         
-        // Verificar que el usuario sea el dueño de la solicitud o un admin
+        // Verificar que el usuario sea el dueño de la solicitud o un administrador
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
         

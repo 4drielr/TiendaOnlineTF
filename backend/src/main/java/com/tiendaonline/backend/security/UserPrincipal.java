@@ -36,7 +36,7 @@ public class UserPrincipal implements UserDetails {
     }
 
     public static UserPrincipal build(Usuario usuario) {
-        // Asignar autoridad según el rol del usuario
+        // Asignar la autoridad según el rol del usuario
         String role = usuario.getRol() != null ? usuario.getRol() : "user";
         String authorityString = "ROLE_" + role.toUpperCase();
         List<GrantedAuthority> authorities = Collections.singletonList(new SimpleGrantedAuthority(authorityString));

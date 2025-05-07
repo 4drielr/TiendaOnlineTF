@@ -3,6 +3,8 @@ package com.tiendaonline.backend.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -39,12 +41,14 @@ public class Usuario {
     private String provincia;
     
     @Column(nullable = false)
-    private String rol = "user"; // Valores posibles: "user" o "admin"
+    private String rol = "user"; // Puede ser 'user' o 'admin'
     
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private List<Pedido> pedidos = new ArrayList<>();
     
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private List<SoporteTecnico> solicitudesSoporte = new ArrayList<>();
 
     public Long getId() {
@@ -127,6 +131,10 @@ public class Usuario {
         this.solicitudesSoporte = solicitudesSoporte;
     }
 
+    public Usuario() {
+        // Constructor vacío necesario para JPA
+    }
+
     public Usuario(String nombre, String apellidos, String email, String password) {
         this.email = email;
         this.password = password;
@@ -134,5 +142,13 @@ public class Usuario {
         this.apellidos = apellidos;
     }
 
-    
+    @Override
+    public String toString() {
+        return "Usuario{" +
+                "id=" + id +
+                ", email='" + email + '\'' +
+                ", nombre='" + nombre + '\'' +
+                ", rol='" + rol + '\'' +
+                '}';
+    }
 }

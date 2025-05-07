@@ -2,6 +2,8 @@ package com.tiendaonline.backend.model;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -26,6 +28,7 @@ public class SoporteTecnico {
     
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "usuario_id", nullable = false)
+    @JsonBackReference
     private Usuario usuario;
     
     @Column(nullable = false)
@@ -39,14 +42,14 @@ public class SoporteTecnico {
     private Date fechaCreacion = new Date();
     
     @Column(nullable = false)
-    private String estado = "abierto"; // abierto, en_proceso, resuelto, cerrado
+    private String estado = "abierto"; // Puede ser: abierto, en_proceso, resuelto, cerrado
     
     private String respuesta;
     
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaRespuesta;
     
-    // Getters y Setters
+    // Métodos de acceso
     public Long getId() {
         return id;
     }

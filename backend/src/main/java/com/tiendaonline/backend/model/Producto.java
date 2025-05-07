@@ -3,6 +3,8 @@ package com.tiendaonline.backend.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -33,6 +35,7 @@ public class Producto {
     private String imagen;
     
     @OneToMany(mappedBy = "producto")
+    @JsonIgnore
     private List<DetallePedido> detallesPedidos = new ArrayList<>();
 
     public Long getId() {
