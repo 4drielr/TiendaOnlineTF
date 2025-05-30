@@ -1,0 +1,40 @@
+.auth-form .form-group.password-group {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1.3em;
+}
+
+.auth-form .form-group.password-group input[type="password"],
+.auth-form .form-group.password-group input[type="text"] {
+  width: 80%;
+  min-width: 0;
+  box-sizing: border-box;
+  height: 40px;
+  font-size: 1em;
+  border-radius: 7px;
+  border: 1px solid #d3d7df;
+  background: #f7f8fa;
+  transition: border 0.2s;
+  padding: 0 1em;
+}
+
+.auth-form .form-group.password-group button {
+  width: 20%;
+  min-width: 70px;
+}
+
+.auth-form .form-group.password-group button {
+  margin-left: 8px;
+  background: none;
+  border: none;
+  color: #4a90e2;
+  cursor: pointer;
+  font-size: 1em;
+  height: 40px;
+  line-height: 40px;
+  padding: 0 10px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+}
+

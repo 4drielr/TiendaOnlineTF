@@ -1,0 +1,75 @@
+/* Estilos para etiquetas flotantes en formularios */
+.form-group {
+  position: relative;
+  margin-bottom: 1.5rem;
+}
+
+.form-group label {
+  position: absolute;
+  top: 0.8rem;
+  left: 1rem;
+  color: #666;
+  font-size: 1rem;
+  transition: all 0.2s ease;
+  pointer-events: none;
+  background-color: transparent;
+  padding: 0 0.2rem;
+}
+
+.form-group .form-control {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 1rem;
+  transition: border-color 0.3s ease;
+}
+
+/* Cuando el input tiene valor o está enfocado, la etiqueta se mueve arriba */
+.form-group .form-control:focus,
+.form-group .form-control:not(:placeholder-shown) {
+  border-color: var(--primary-color);
+  padding-top: 1.2rem;
+  padding-bottom: 0.4rem;
+}
+
+.form-group .form-control:focus + label,
+.form-group .form-control:not(:placeholder-shown) + label {
+  top: -0.5rem;
+  left: 0.8rem;
+  font-size: 0.8rem;
+  color: var(--primary-color);
+  background-color: white;
+}
+
+/* Ajustes para inputs con iconos */
+.input-with-icon {
+  position: relative;
+}
+
+.input-with-icon .form-control {
+  padding-right: 2.5rem;
+}
+
+.input-icon {
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #999;
+  z-index: 1;
+}
+
+/* Ajustes para inputs deshabilitados */
+.form-control.disabled {
+  background-color: #f5f5f5;
+  cursor: not-allowed;
+}
+
+/* Texto de ayuda debajo de los inputs */
+.form-text {
+  display: block;
+  margin-top: 0.5rem;
+  font-size: 0.85rem;
+  color: #666;
+}
