@@ -2,7 +2,6 @@ com\tiendaonline\backend\controller\ProductoController.class
 com\tiendaonline\backend\controller\EventoController.class
 com\tiendaonline\backend\controller\HomeController.class
 com\tiendaonline\backend\request\UsuarioUpdateRequest.class
-com\tiendaonline\backend\controller\SignUpRequest.class
 com\tiendaonline\backend\model\MensajeSoporte.class
 com\tiendaonline\backend\dto\PedidoDTO.class
 com\tiendaonline\backend\security\JwtAuthenticationFilter.class
@@ -14,11 +13,13 @@ com\tiendaonline\backend\model\SoporteTecnico.class
 com\tiendaonline\backend\repository\MensajeSoporteRepository.class
 com\tiendaonline\backend\repository\ProductoRepository.class
 com\tiendaonline\backend\security\SecurityConfig.class
+com\tiendaonline\backend\util\PriceFormatter.class
 com\tiendaonline\backend\config\WebMvcConfig.class
 com\tiendaonline\backend\controller\SoporteTecnicoController.class
-com\tiendaonline\backend\controller\LoginRequest.class
 com\tiendaonline\backend\controller\PedidoController.class
+com\tiendaonline\backend\config\WebConfig.class
 com\tiendaonline\backend\model\DetallePedido.class
+com\tiendaonline\backend\util\PriceFormatter$EuroSerializer.class
 com\tiendaonline\backend\repository\DetallePedidoRepository.class
 com\tiendaonline\backend\controller\ContactoController.class
 com\tiendaonline\backend\model\Producto.class
@@ -31,7 +32,10 @@ com\tiendaonline\backend\dto\DetallePedidoDTO.class
 com\tiendaonline\backend\controller\UsuarioController.class
 com\tiendaonline\backend\dto\RegisterRequest.class
 com\tiendaonline\backend\security\UserPrincipal.class
+com\tiendaonline\backend\config\WebConfig$1.class
 com\tiendaonline\backend\controller\CustomErrorController.class
+com\tiendaonline\backend\controller\PublicController.class
+com\tiendaonline\backend\controller\TestController.class
 com\tiendaonline\backend\repository\SoporteTecnicoRepository.class
 com\tiendaonline\backend\model\Contacto.class
 com\tiendaonline\backend\model\Pedido.class

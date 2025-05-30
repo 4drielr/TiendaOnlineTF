@@ -24,8 +24,3 @@
     (1, 1, 1499.99, 1499.99, 1, 1),
     (2, 1, 899.99, 899.99, 2, 2),
     (3, 1, 199.99, 199.99, 2, 4);
-
-    -- Insertar incidencias de ejemplo
-    INSERT INTO soporte_tecnico (id, asunto, descripcion, fecha_creacion, estado, usuario_id) VALUES
-    (1, 'Problema con laptop', 'La laptop no enciende correctamente', '2025-04-26', 'abierto', 2),
-    (2, 'Consulta sobre garantía', 'Quisiera saber cuánto tiempo de garantía tiene el smartphone', '2025-04-29', 'cerrado', 2);

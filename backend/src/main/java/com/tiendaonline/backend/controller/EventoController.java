@@ -6,6 +6,8 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,9 +32,23 @@ public class EventoController {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
+    // Obtener todos los eventos (accesible para todos)
     @GetMapping
     public List<Evento> getAllEventos() {
         return eventoRepository.findAll();
+    }
+    
+    // Obtener eventos del usuario autenticado
+    @GetMapping("/mis-eventos")
+    public ResponseEntity<?> getMisEventos() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String email = authentication.getName();
+        Optional<Usuario> usuario = usuarioRepository.findByEmail(email);
+        if (!usuario.isPresent()) {
+            return ResponseEntity.badRequest().body("Usuario no encontrado");
+        }
+        List<Evento> eventos = eventoRepository.findByUsuario(usuario.get());
+        return ResponseEntity.ok(eventos);
     }
     
     @GetMapping("/tipos/{tipo}")
@@ -99,8 +115,70 @@ public class EventoController {
         }
     }
 
+    // Cancelar un evento (usuario o administrador)
+    @PutMapping("/{id}/cancelar")
+    public ResponseEntity<?> cancelarEvento(@PathVariable Long id) {
+        Optional<Evento> evento = eventoRepository.findById(id);
+        if (!evento.isPresent()) {
+            return ResponseEntity.notFound().build();
+        }
+        
+        // Verificar que el usuario sea el dueño del evento o un administrador
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String email = authentication.getName();
+        
+        Optional<Usuario> usuario = usuarioRepository.findByEmail(email);
+        if (!usuario.isPresent()) {
+            return ResponseEntity.badRequest().body("Usuario no encontrado");
+        }
+        
+        if (!evento.get().getUsuario().getId().equals(usuario.get().getId()) && 
+            !authentication.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"))) {
+            return ResponseEntity.status(403).body("No tienes permiso para cancelar este evento");
+        }
+        
+        // Solo se pueden cancelar eventos en estado pendiente o aceptado
+        String estadoActual = evento.get().getEstado().toUpperCase();
+        if (!estadoActual.equals("PENDIENTE") && !estadoActual.equals("ACEPTADO")) {
+            return ResponseEntity.badRequest().body("Solo se pueden cancelar eventos en estado pendiente o aceptado");
+        }
+        
+        Evento existingEvento = evento.get();
+        existingEvento.setEstado("cancelado");
+        
+        return ResponseEntity.ok(eventoRepository.save(existingEvento));
+    }
+    
+    // Actualizar el estado de un evento (solo admin)
+    @PutMapping("/{id}/estado")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<?> updateEstadoEvento(@PathVariable Long id, @RequestBody String estado) {
+        Optional<Evento> evento = eventoRepository.findById(id);
+        if (!evento.isPresent()) {
+            return ResponseEntity.notFound().build();
+        }
+        
+        // Validar que el estado sea ACEPTADO o RECHAZADO
+        estado = estado.trim().toUpperCase();
+        if (!estado.equals("ACEPTADO") && !estado.equals("RECHAZADO")) {
+            return ResponseEntity.badRequest().body("El estado debe ser ACEPTADO o RECHAZADO");
+        }
+        
+        Evento existingEvento = evento.get();
+        existingEvento.setEstado(estado);
+        
+        return ResponseEntity.ok(eventoRepository.save(existingEvento));
+    }
+    
+    // Obtener todos los eventos (solo admin)
+    @GetMapping("/admin")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<?> getAllEventosAdmin() {
+        return ResponseEntity.ok(eventoRepository.findAll());
+    }
+    
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> deleteEvento(@PathVariable Long id) {
         Optional<Evento> evento = eventoRepository.findById(id);
         if (evento.isPresent()) {

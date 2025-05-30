@@ -47,9 +47,7 @@ public class Usuario {
     @JsonIgnore
     private List<Pedido> pedidos = new ArrayList<>();
     
-    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonIgnore
-    private List<SoporteTecnico> solicitudesSoporte = new ArrayList<>();
+    // Eliminada relación con SoporteTecnico que causaba errores
 
     public Long getId() {
         return id;
@@ -121,14 +119,6 @@ public class Usuario {
 
     public void setPedidos(List<Pedido> pedidos) {
         this.pedidos = pedidos;
-    }
-
-    public List<SoporteTecnico> getSolicitudesSoporte() {
-        return solicitudesSoporte;
-    }
-
-    public void setSolicitudesSoporte(List<SoporteTecnico> solicitudesSoporte) {
-        this.solicitudesSoporte = solicitudesSoporte;
     }
 
     public Usuario() {

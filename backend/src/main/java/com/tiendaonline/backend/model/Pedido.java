@@ -23,8 +23,10 @@ import jakarta.persistence.CollectionTable;
 import lombok.Data;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.tiendaonline.backend.util.PriceFormatter;
 
 @Data
 @Entity
@@ -42,17 +44,18 @@ public class Pedido {
     
     @Column(nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Europe/Madrid")
     private Date fechaPedido = new Date();
     
     @Column(nullable = false)
     private String estado = "pendiente"; // Valores posibles: pendiente, enviado, entregado, cancelado
     
     @Column(nullable = false)
+    @JsonSerialize(using = PriceFormatter.EuroSerializer.class)
     private Double total = 0.0;
     
-    @JsonManagedReference
     @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "pedido", "producto"})
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "pedido"})
     private Set<DetallePedido> detalles = new HashSet<>();
     
     @ElementCollection

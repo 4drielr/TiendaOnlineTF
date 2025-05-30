@@ -49,11 +49,11 @@ public class Evento {
     private Integer numInvitados;
     
     @Column(nullable = false)
-    private String estado; // PENDIENTE, CONFIRMADO, CANCELADO
+    private String estado; // PENDIENTE, ACEPTADO, RECHAZADO
     
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "usuario_id", nullable = false)
-    @JsonIgnoreProperties({"pedidos", "solicitudesSoporte"})
+    @JsonIgnoreProperties({"pedidos", "solicitudesSoporte", "hibernateLazyInitializer", "handler"})
     private Usuario usuario;
     
     // Servicios incluidos en el evento

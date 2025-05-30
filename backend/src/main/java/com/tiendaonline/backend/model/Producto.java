@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.tiendaonline.backend.util.PriceFormatter;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -30,6 +32,7 @@ public class Producto {
     private String descripcion;
     
     @Column(nullable = false)
+    @JsonSerialize(using = PriceFormatter.EuroSerializer.class)
     private Double precio;
     
     private String imagen;

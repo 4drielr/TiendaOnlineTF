@@ -1,5 +1,8 @@
 package com.tiendaonline.backend.controller;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -8,9 +11,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.HashMap;
-import java.util.Map;
-
+import com.tiendaonline.backend.dto.LoginRequest;
+import com.tiendaonline.backend.dto.RegisterRequest;
 import com.tiendaonline.backend.model.Usuario;
 import com.tiendaonline.backend.repository.UsuarioRepository;
 import com.tiendaonline.backend.security.JwtUtil;
@@ -32,103 +34,102 @@ public class AuthController {
     public ResponseEntity<?> authenticateUser(@RequestBody LoginRequest loginRequest) {
         try {
             System.out.println("Login attempt: " + loginRequest.getEmail());
-            Usuario usuario = usuarioRepository.findByEmail(loginRequest.getEmail())
-                .orElse(null);
-            System.out.println("Usuario encontrado: " + (usuario != null));
-            if (usuario != null) {
-                System.out.println("Password en BD: " + usuario.getPassword());
-                System.out.println("Password introducido: " + loginRequest.getPassword());
-                System.out.println("Password match: " + passwordEncoder.matches(loginRequest.getPassword(), usuario.getPassword()));
+            
+            // Verificar si el usuario existe
+            if (loginRequest.getEmail() == null || loginRequest.getEmail().isEmpty()) {
+                return ResponseEntity.badRequest().body("Email no proporcionado");
             }
+            
+            Usuario usuario = usuarioRepository.findByEmail(loginRequest.getEmail()).orElse(null);
+            
             if (usuario == null) {
+                System.out.println("Usuario no encontrado: " + loginRequest.getEmail());
                 return ResponseEntity.badRequest().body("Usuario no encontrado");
             }
+            
+            System.out.println("Usuario encontrado: " + usuario.getEmail());
+            System.out.println("Password hash en BD: " + usuario.getPassword());
+            
+            // Verificar contraseña
             if (passwordEncoder.matches(loginRequest.getPassword(), usuario.getPassword())) {
-                // Generar el token JWT
-                String token = jwtUtil.generateToken(usuario.getEmail());
-                // Construir respuesta con usuario y token
+                System.out.println("Contraseña correcta para: " + loginRequest.getEmail());
+                
+                // Generar token JWT
+                String jwt = jwtUtil.generateToken(usuario.getEmail());
+                
+                // Crear respuesta con datos del usuario y token
                 Map<String, Object> response = new HashMap<>();
+                response.put("token", jwt);
                 response.put("id", usuario.getId());
+                response.put("email", usuario.getEmail());
                 response.put("nombre", usuario.getNombre());
                 response.put("apellidos", usuario.getApellidos());
-                response.put("email", usuario.getEmail());
+                response.put("rol", usuario.getRol());
                 response.put("direccion", usuario.getDireccion());
                 response.put("provincia", usuario.getProvincia());
-                response.put("rol", usuario.getRol());
-                response.put("pedidos", usuario.getPedidos());
-                response.put("solicitudesSoporte", usuario.getSolicitudesSoporte());
-                response.put("token", token);
+                
                 return ResponseEntity.ok(response);
             } else {
-                return ResponseEntity.badRequest().body("Contraseña incorrecta");
+                System.out.println("Contraseña incorrecta para: " + loginRequest.getEmail());
+                return ResponseEntity.badRequest().body("Credenciales incorrectas");
             }
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Error en la autenticación: " + e.getMessage());
+            System.err.println("Error en autenticación: " + e.getMessage());
+            return ResponseEntity.badRequest().body("Error en la autenticación");
         }
     }
 
     @PostMapping("/registro")
-    public ResponseEntity<?> registerUser(@RequestBody SignUpRequest signUpRequest) {
+    public ResponseEntity<?> registerUser(@RequestBody RegisterRequest registerRequest) {
         try {
-            if (usuarioRepository.existsByEmail(signUpRequest.getEmail())) {
-                return ResponseEntity.badRequest().body("El email ya está registrado");
-            }
-
-            Usuario usuario = new Usuario(
-                signUpRequest.getNombre(), 
-                signUpRequest.getApellidos(), 
-                signUpRequest.getEmail(), 
-                passwordEncoder.encode(signUpRequest.getPassword())
-            );
-
-            if (signUpRequest.getDireccion() != null && !signUpRequest.getDireccion().isEmpty()) {
-                usuario.setDireccion(signUpRequest.getDireccion());
+            // Validar datos de entrada
+            if (registerRequest.getEmail() == null || registerRequest.getEmail().isEmpty()) {
+                return ResponseEntity.badRequest().body("El email es obligatorio");
             }
             
-            if (signUpRequest.getProvincia() != null && !signUpRequest.getProvincia().isEmpty()) {
-                usuario.setProvincia(signUpRequest.getProvincia());
+            if (registerRequest.getPassword() == null || registerRequest.getPassword().isEmpty()) {
+                return ResponseEntity.badRequest().body("La contraseña es obligatoria");
             }
-
-            usuario.setRol("user");
+            
+            // Verificar si el email ya está en uso
+            if (usuarioRepository.existsByEmail(registerRequest.getEmail())) {
+                return ResponseEntity.badRequest().body("El email ya está registrado");
+            }
+            
+            // Crear nuevo usuario
+            Usuario usuario = new Usuario();
+            usuario.setEmail(registerRequest.getEmail());
+            usuario.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
+            usuario.setNombre(registerRequest.getNombre() != null ? registerRequest.getNombre() : "");
+            usuario.setApellidos(registerRequest.getApellidos() != null ? registerRequest.getApellidos() : "");
+            usuario.setDireccion(registerRequest.getDireccion() != null ? registerRequest.getDireccion() : "");
+            usuario.setProvincia(registerRequest.getProvincia() != null ? registerRequest.getProvincia() : "");
+            usuario.setRol("user"); // Por defecto, todos los nuevos usuarios son 'user'
+            
             usuarioRepository.save(usuario);
-
-            return ResponseEntity.ok("Usuario registrado exitosamente");
+            
+            // Generar token JWT para inicio de sesión automático
+            String jwt = jwtUtil.generateToken(usuario.getEmail());
+            
+            // Crear respuesta con datos del usuario y token
+            Map<String, Object> response = new HashMap<>();
+            response.put("token", jwt);
+            response.put("id", usuario.getId());
+            response.put("email", usuario.getEmail());
+            response.put("nombre", usuario.getNombre());
+            response.put("apellidos", usuario.getApellidos());
+            response.put("rol", usuario.getRol());
+            response.put("direccion", usuario.getDireccion());
+            response.put("provincia", usuario.getProvincia());
+            response.put("mensaje", "Usuario registrado exitosamente");
+            
+            return ResponseEntity.ok(response);
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Error en el registro: " + e.getMessage());
+            System.err.println("Error en el registro: " + e.getMessage());
+            if (e.getMessage() != null && e.getMessage().contains("constraint")) {
+                return ResponseEntity.badRequest().body("Error al registrar usuario: el email ya está en uso");
+            }
+            return ResponseEntity.badRequest().body("Error al registrar usuario");
         }
     }
-}
-
-class LoginRequest {
-    private String email;
-    private String password;
-
-    // Getters y setters
-    public String getEmail() { return email; }
-    public void setEmail(String email) { this.email = email; }
-    public String getPassword() { return password; }
-    public void setPassword(String password) { this.password = password; }
-}
-
-class SignUpRequest {
-    private String nombre;
-    private String apellidos;
-    private String email;
-    private String password;
-    private String direccion;
-    private String provincia;
-
-    // Getters y setters
-    public String getNombre() { return nombre; }
-    public void setNombre(String nombre) { this.nombre = nombre; }
-    public String getApellidos() { return apellidos; }
-    public void setApellidos(String apellidos) { this.apellidos = apellidos; }
-    public String getEmail() { return email; }
-    public void setEmail(String email) { this.email = email; }
-    public String getPassword() { return password; }
-    public void setPassword(String password) { this.password = password; }
-    public String getDireccion() { return direccion; }
-    public void setDireccion(String direccion) { this.direccion = direccion; }
-    public String getProvincia() { return provincia; }
-    public void setProvincia(String provincia) { this.provincia = provincia; }
 }

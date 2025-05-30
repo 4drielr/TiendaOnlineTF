@@ -1,11 +1,5 @@
--- Crear base de datos (solo necesario si no existe)
--- La base de datos ya fue creada manualmente con:
--- CREATE DATABASE IF NOT EXISTS tiendadb CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
--- CREATE USER 'tienda'@'20.199.88.134' IDENTIFIED BY 'password';
--- GRANT ALL PRIVILEGES ON tiendadb.* TO 'tienda'@'20.199.88.134';
--- FLUSH PRIVILEGES;
-
-USE tiendadb;
+-- Configuración para H2 en memoria
+-- No se necesita crear la base de datos ni usuarios en H2 en memoria
 
 -- Tabla usuarios
 CREATE TABLE IF NOT EXISTS usuarios (
@@ -59,17 +53,6 @@ CREATE TABLE IF NOT EXISTS detalles_pedido (
     FOREIGN KEY (producto_id) REFERENCES productos(id)
 );
 
--- Tabla soporte_tecnico
-CREATE TABLE IF NOT EXISTS soporte_tecnico (
-    id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    usuario_id BIGINT NOT NULL,
-    asunto VARCHAR(255) NOT NULL,
-    mensaje TEXT NOT NULL,
-    estado VARCHAR(50) NOT NULL DEFAULT 'PENDIENTE',
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
-);
 
 -- Tabla contactos
 CREATE TABLE IF NOT EXISTS contactos (
