@@ -3,7 +3,6 @@ C:\Users\4drie\Desktop\TiendaOnlineTF\backend\src\main\java\com\tiendaonline\bac
 C:\Users\4drie\Desktop\TiendaOnlineTF\backend\src\main\java\com\tiendaonline\backend\model\DetallePedido.java
 C:\Users\4drie\Desktop\TiendaOnlineTF\backend\src\main\java\com\tiendaonline\backend\model\Usuario.java
 C:\Users\4drie\Desktop\TiendaOnlineTF\backend\src\main\java\com\tiendaonline\backend\controller\ProductoController.java
-C:\Users\4drie\Desktop\TiendaOnlineTF\backend\src\main\java\com\tiendaonline\backend\model\SoporteTecnico.java
 C:\Users\4drie\Desktop\TiendaOnlineTF\backend\src\main\java\com\tiendaonline\backend\security\JwtAuthenticationFilter.java
 C:\Users\4drie\Desktop\TiendaOnlineTF\backend\src\main\java\com\tiendaonline\backend\dto\PedidoDTO.java
 C:\Users\4drie\Desktop\TiendaOnlineTF\backend\src\main\java\com\tiendaonline\backend\model\Pedido.java
@@ -12,16 +11,11 @@ C:\Users\4drie\Desktop\TiendaOnlineTF\backend\src\main\java\com\tiendaonline\bac
 C:\Users\4drie\Desktop\TiendaOnlineTF\backend\src\main\java\com\tiendaonline\backend\request\ContactoRequest.java
 C:\Users\4drie\Desktop\TiendaOnlineTF\backend\src\main\java\com\tiendaonline\backend\config\WebMvcConfig.java
 C:\Users\4drie\Desktop\TiendaOnlineTF\backend\src\main\java\com\tiendaonline\backend\model\Producto.java
-C:\Users\4drie\Desktop\TiendaOnlineTF\backend\src\main\java\com\tiendaonline\backend\controller\PublicController.java
 C:\Users\4drie\Desktop\TiendaOnlineTF\backend\src\main\java\com\tiendaonline\backend\dto\LoginRequest.java
-C:\Users\4drie\Desktop\TiendaOnlineTF\backend\src\main\java\com\tiendaonline\backend\repository\SoporteTecnicoRepository.java
 C:\Users\4drie\Desktop\TiendaOnlineTF\backend\src\main\java\com\tiendaonline\backend\dto\RegisterRequest.java
 C:\Users\4drie\Desktop\TiendaOnlineTF\backend\src\main\java\com\tiendaonline\backend\security\SecurityConfig.java
-C:\Users\4drie\Desktop\TiendaOnlineTF\backend\src\main\java\com\tiendaonline\backend\config\WebConfig.java
-C:\Users\4drie\Desktop\TiendaOnlineTF\backend\src\main\java\com\tiendaonline\backend\controller\HomeController.java
 C:\Users\4drie\Desktop\TiendaOnlineTF\backend\src\main\java\com\tiendaonline\backend\repository\PedidoRepository.java
 C:\Users\4drie\Desktop\TiendaOnlineTF\backend\src\main\java\com\tiendaonline\backend\model\MensajeSoporte.java
-C:\Users\4drie\Desktop\TiendaOnlineTF\backend\src\main\java\com\tiendaonline\backend\controller\TestController.java
 C:\Users\4drie\Desktop\TiendaOnlineTF\backend\src\main\java\com\tiendaonline\backend\model\Contacto.java
 C:\Users\4drie\Desktop\TiendaOnlineTF\backend\src\main\java\com\tiendaonline\backend\security\JwtUtil.java
 C:\Users\4drie\Desktop\TiendaOnlineTF\backend\src\main\java\com\tiendaonline\backend\repository\EventoRepository.java
@@ -29,7 +23,6 @@ C:\Users\4drie\Desktop\TiendaOnlineTF\backend\src\main\java\com\tiendaonline\bac
 C:\Users\4drie\Desktop\TiendaOnlineTF\backend\src\main\java\com\tiendaonline\backend\request\UsuarioUpdateRequest.java
 C:\Users\4drie\Desktop\TiendaOnlineTF\backend\src\main\java\com\tiendaonline\backend\controller\UsuarioController.java
 C:\Users\4drie\Desktop\TiendaOnlineTF\backend\src\main\java\com\tiendaonline\backend\BackendApplication.java
-C:\Users\4drie\Desktop\TiendaOnlineTF\backend\src\main\java\com\tiendaonline\backend\controller\SoporteTecnicoController.java
 C:\Users\4drie\Desktop\TiendaOnlineTF\backend\src\main\java\com\tiendaonline\backend\controller\ContactoController.java
 C:\Users\4drie\Desktop\TiendaOnlineTF\backend\src\main\java\com\tiendaonline\backend\controller\EventoController.java
 C:\Users\4drie\Desktop\TiendaOnlineTF\backend\src\main\java\com\tiendaonline\backend\security\UserPrincipal.java
@@ -37,5 +30,4 @@ C:\Users\4drie\Desktop\TiendaOnlineTF\backend\src\main\java\com\tiendaonline\bac
 C:\Users\4drie\Desktop\TiendaOnlineTF\backend\src\main\java\com\tiendaonline\backend\util\PriceFormatter.java
 C:\Users\4drie\Desktop\TiendaOnlineTF\backend\src\main\java\com\tiendaonline\backend\repository\DetallePedidoRepository.java
 C:\Users\4drie\Desktop\TiendaOnlineTF\backend\src\main\java\com\tiendaonline\backend\model\Evento.java
-C:\Users\4drie\Desktop\TiendaOnlineTF\backend\src\main\java\com\tiendaonline\backend\controller\CustomErrorController.java
 C:\Users\4drie\Desktop\TiendaOnlineTF\backend\src\main\java\com\tiendaonline\backend\repository\MensajeSoporteRepository.java

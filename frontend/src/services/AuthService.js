@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-// Configuración para conectarse al backend local
-const API_URL = 'http://20.199.88.134:8080';
+// URL relativa para que Nginx redireccione correctamente
+const API_URL = '/api';
 
 class AuthService {
   login(email, password) {

@@ -2,7 +2,8 @@
 import axios from 'axios';
 import AuthService from './AuthService';
 
-const API_URL = 'http://20.199.88.134:8080';
+// URL relativa para que Nginx redireccione correctamente
+const API_URL = '/api';
 
 // Este servicio ha sido eliminado porque la funcionalidad de soporte ya no existe.
 const SoporteService = {};

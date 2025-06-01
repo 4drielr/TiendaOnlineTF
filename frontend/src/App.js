@@ -23,7 +23,7 @@ import Catalog from './components/Catalog';
 import Checkout from './components/Checkout';
 import Login from './components/Login';
 import Register from './components/Register';
-import Contact from './components/Contact';
+// El componente Contacto ya está importado correctamente en la línea 36
 import UserProfile from './components/UserProfile';
 import AdminProfile from './components/AdminProfile';
 import EditProfile from './components/EditProfile';
